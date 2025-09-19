@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maoj Group - Travel Booking Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d5a87;
+            --accent-color: #f6ad55;
+            --gold-color: #d4af37;
+            --dark-bg: #0f1419;
+            --card-bg: #1a202c;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --border-color: #2d3748;
+            --success-color: #48bb78;
+            --error-color: #f56565;
+            --warning-color: #ed8936;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a202c 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        [dir="ltr"] {
+            font-family: 'Inter', 'Cairo', sans-serif;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(26, 32, 44, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--gold-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--primary-color);
+            color: var(--gold-color);
+        }
+
+        .lang-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .lang-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(212, 175, 55, 0.1), rgba(45, 90, 135, 0.2));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--gold-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gold-color);
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--gold-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 54, 93, 0.3);
+        }
+
+        /* Package Grid */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .package-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .package-card:hover .package-image {
+            transform: scale(1.05);
+        }
+
+        .package-content {
+            padding: 1.5rem;
+        }
+
+        .package-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gold-color);
+        }
+
+        .package-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .package-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .package-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+        }
+
+        .package-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stars {
+            color: var(--gold-color);
+        }
+
+        .book-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .book-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Booking Form */
+        .booking-form {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: var(--gold-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .addon-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .addon-card {
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .addon-card:hover, .addon-card.selected {
+            border-color: var(--gold-color);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .addon-card h4 {
+            color: var(--gold-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .addon-price {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        /* Cart and Summary */
+        .cart-summary {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gold-color);
+        }
+
+        /* Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-card h3 {
+            color: var(--gold-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Admin Panel */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+            background: var(--gold-color);
+            color: var(--dark-bg);
+        }
+
+        .admin-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+        }
+
+        .package-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .package-item {
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+
+        .package-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .package-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .package-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .edit-button {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .delete-button {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--error-color);
+        }
+
+        /* System Architecture */
+        .architecture-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .architecture-diagram {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .architecture-diagram::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=800&h=400&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+        }
+
+        .diagram-content {
+            position: relative;
+            z-index: 2;
+            color: var(--gold-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .addon-options {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+        }
+
+        /* RTL/LTR Specific Styles */
+        [dir="rtl"] .nav-menu {
+            flex-direction: row-reverse;
+        }
+
+        [dir="ltr"] .nav-menu {
+            flex-direction: row;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--gold-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">M</div>
+                <span data-ar="مجموعة ماوج" data-en="Maoj Group">مجموعة ماوج</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="showSection('home')" data-ar="الرئيسية" data-en="Home">الرئيسية</li>
+                    <li class="nav-item" onclick="showSection('booking')" data-ar="الحجز" data-en="Booking">الحجز</li>
+                    <li class="nav-item" onclick="showSection('dashboard')" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</li>
+                    <li class="nav-item" onclick="showSection('admin')" data-ar="الإدارة" data-en="Admin">الإدارة</li>
+                </ul>
+            </nav>
+            <button class="lang-toggle" onclick="toggleLanguage()" data-ar="English" data-en="العربية">English</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 data-ar="اكتشف العالم معنا" data-en="Discover the World with Us">اكتشف العالم معنا</h1>
+                    <p data-ar="رحلات استثنائية وتجارب لا تُنسى في أجمل وجهات العالم" data-en="Exceptional journeys and unforgettable experiences in the world's most beautiful destinations">رحلات استثنائية وتجارب لا تُنسى في أجمل وجهات العالم</p>
+                    <button class="cta-button" onclick="showSection('booking')" data-ar="احجز الآن" data-en="Book Now">احجز الآن</button>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <h2 data-ar="ابحث عن رحلتك المثالية" data-en="Find Your Perfect Trip">ابحث عن رحلتك المثالية</h2>
+                <form class="search-form" onsubmit="searchPackages(event)">
+                    <div class="form-group">
+                        <label data-ar="الوجهة" data-en="Destination">الوجهة</label>
+                        <select id="destination-filter">
+                            <option value="" data-ar="جميع الوجهات" data-en="All Destinations">جميع الوجهات</option>
+                            <option value="dubai" data-ar="دبي" data-en="Dubai">دبي</option>
+                            <option value="paris" data-ar="باريس" data-en="Paris">باريس</option>
+                            <option value="tokyo" data-ar="طوكيو" data-en="Tokyo">طوكيو</option>
+                            <option value="maldives" data-ar="المالديف" data-en="Maldives">المالديف</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-ar="تاريخ المغادرة" data-en="Departure Date">تاريخ المغادرة</label>
+                        <input type="date" id="departure-date">
+                    </div>
+                    <div class="form-group">
+                        <label data-ar="السعر الأقصى" data-en="Max Price">السعر الأقصى</label>
+                        <input type="number" id="max-price" placeholder="5000">
+                    </div>
+                    <div class="form-group">
+                        <label data-ar="التقييم الأدنى" data-en="Min Rating">التقييم الأدنى</label>
+                        <select id="min-rating">
+                            <option value="">جميع التقييمات</option>
+                            <option value="3">3+ نجوم</option>
+                            <option value="4">4+ نجوم</option>
+                            <option value="5">5 نجوم</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="search-button" data-ar="بحث" data-en="Search">بحث</button>
+                </form>
+            </div>
+
+            <!-- Featured Packages -->
+            <div class="packages-section">
+                <h2 data-ar="الباقات المميزة" data-en="Featured Packages">الباقات المميزة</h2>
+                <div class="packages-grid" id="packages-grid">
+                    <!-- Packages will be loaded here -->
+                </div>
+            </div>
+
+            <!-- System Architecture Section -->
+            <div class="architecture-section">
+                <h2 data-ar="هيكل النظام وتدفق البيانات" data-en="System Architecture & Data Flow">هيكل النظام وتدفق البيانات</h2>
+                <div class="architecture-diagram">
+                    <div class="diagram-content">
+                        <div data-ar="مخطط هيكل النظام" data-en="System Architecture Diagram">مخطط هيكل النظام</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;" data-ar="واجهة المستخدم ← معالجة البيانات ← قاعدة البيانات المحلية" data-en="User Interface ← Data Processing ← Local Storage">واجهة المستخدم ← معالجة البيانات ← قاعدة البيانات المحلية</div>
+                    </div>
+                </div>
+                <p data-ar="يعتمد النظام على تقنيات الويب الحديثة مع تخزين البيانات محلياً لضمان الأداء السريع والموثوقية" data-en="The system relies on modern web technologies with local data storage to ensure fast performance and reliability">يعتمد النظام على تقنيات الويب الحديثة مع تخزين البيانات محلياً لضمان الأداء السريع والموثوقية</p>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking" class="section">
+            <h2 data-ar="حجز الرحلة" data-en="Book Your Trip">حجز الرحلة</h2>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div>
+                    <!-- Package Details -->
+                    <div class="booking-form" id="package-details" style="display: none;">
+                        <h3 data-ar="تفاصيل الباقة" data-en="Package Details">تفاصيل الباقة</h3>
+                        <div id="selected-package-info"></div>
+                    </div>
+
+                    <!-- Booking Form -->
+                    <div class="booking-form">
+                        <div class="form-section">
+                            <h3 data-ar="معلومات المسافر" data-en="Traveler Information">معلومات المسافر</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label data-ar="الاسم الأول" data-en="First Name">الاسم الأول</label>
+                                    <input type="text" id="first-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-ar="اسم العائلة" data-en="Last Name">اسم العائلة</label>
+                                    <input type="text" id="last-name" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+                                    <input type="email" id="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-ar="رقم الهاتف" data-en="Phone">رقم الهاتف</label>
+                                    <input type="tel" id="phone" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label data-ar="عدد المسافرين" data-en="Number of Travelers">عدد المسافرين</label>
+                                    <select id="travelers-count" onchange="updateTotalPrice()">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5+</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label data-ar="تاريخ السفر" data-en="Travel Date">تاريخ السفر</label>
+                                    <input type="date" id="travel-date" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add-ons -->
+                        <div class="form-section">
+                            <h3 data-ar="الخدمات الإضافية" data-en="Add-on Services">الخدمات الإضافية</h3>
+                            <div class="addon-options">
+                                <div class="addon-card" onclick="toggleAddon(this, 'hotel', 200)" data-addon="hotel">
+                                    <h4 data-ar="فندق فاخر" data-en="Luxury Hotel">فندق فاخر</h4>
+                                    <p data-ar="إقامة في أفضل الفنادق" data-en="Stay in premium hotels">إقامة في أفضل الفنادق</p>
+                                    <div class="addon-price">+$200</div>
+                                </div>
+                                <div class="addon-card" onclick="toggleAddon(this, 'transport', 150)" data-addon="transport">
+                                    <h4 data-ar="نقل خاص" data-en="Private Transport">نقل خاص</h4>
+                                    <p data-ar="سيارة خاصة مع سائق" data-en="Private car with driver">سيارة خاصة مع سائق</p>
+                                    <div class="addon-price">+$150</div>
+                                </div>
+                                <div class="addon-card" onclick="toggleAddon(this, 'meals', 100)" data-addon="meals">
+                                    <h4 data-ar="وجبات مميزة" data-en="Premium Meals">وجبات مميزة</h4>
+                                    <p data-ar="وجبات في أفضل المطاعم" data-en="Meals at finest restaurants">وجبات في أفضل المطاعم</p>
+                                    <div class="addon-price">+$100</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3 data-ar="ملخص الحجز" data-en="Booking Summary">ملخص الحجز</h3>
+                    <div id="cart-items">
+                        <div class="cart-item">
+                            <span data-ar="يرجى اختيار باقة" data-en="Please select a package">يرجى اختيار باقة</span>
+                        </div>
+                    </div>
+                    <div class="cart-total">
+                        <span data-ar="المجموع: $0" data-en="Total: $0">المجموع: $0</span>
+                    </div>
+                    <button class="cta-button" style="width: 100%; margin-top: 1rem;" onclick="processBooking()" data-ar="تأكيد الحجز" data-en="Confirm Booking">تأكيد الحجز</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <h2 data-ar="لوحة التحكم" data-en="User Dashboard">لوحة التحكم</h2>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3 data-ar="📊 إحصائياتي" data-en="📊 My Statistics">📊 إحصائياتي</h3>
+                    <div class="stat-number" id="total-bookings">0</div>
+                    <p data-ar="إجمالي الحجوزات" data-en="Total Bookings">إجمالي الحجوزات</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 data-ar="💰 إجمالي الإنفاق" data-en="💰 Total Spending">💰 إجمالي الإنفاق</h3>
+                    <div class="stat-number" id="total-spending">$0</div>
+                    <p data-ar="المبلغ المنفق" data-en="Amount Spent">المبلغ المنفق</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 data-ar="⭐ نقاط الولاء" data-en="⭐ Loyalty Points">⭐ نقاط الولاء</h3>
+                    <div class="stat-number" id="loyalty-points">0</div>
+                    <p data-ar="النقاط المتاحة" data-en="Available Points">النقاط المتاحة</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 data-ar="📅 الحجوزات الأخيرة" data-en="📅 Recent Bookings">📅 الحجوزات الأخيرة</h3>
+                    <div id="recent-bookings">
+                        <p data-ar="لا توجد حجوزات حتى الآن" data-en="No bookings yet">لا توجد حجوزات حتى الآن</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 data-ar="🔔 الإشعارات" data-en="🔔 Notifications">🔔 الإشعارات</h3>
+                    <div id="notifications">
+                        <p data-ar="مرحباً بك في مجموعة ماوج!" data-en="Welcome to Maoj Group!">مرحباً بك في مجموعة ماوج!</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 data-ar="👤 معلومات الملف الشخصي" data-en="👤 Profile Information">👤 معلومات الملف الشخصي</h3>
+                    <div id="profile-info">
+                        <p data-ar="الاسم: مستخدم ضيف" data-en="Name: Guest User">الاسم: مستخدم ضيف</p>
+                        <p data-ar="العضوية: عضو جديد" data-en="Membership: New Member">العضوية: عضو جديد</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="section">
+            <div id="admin-login" class="booking-form" style="max-width: 400px; margin: 2rem auto;">
+                <h2 data-ar="تسجيل دخول الإدارة" data-en="Admin Login">تسجيل دخول الإدارة</h2>
+                <div class="form-group">
+                    <label data-ar="اسم المستخدم" data-en="Username">اسم المستخدم</label>
+                    <input type="text" id="admin-username" value="admin">
+                </div>
+                <div class="form-group">
+                    <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+                    <input type="password" id="admin-password" value="123">
+                </div>
+                <button class="cta-button" onclick="adminLogin()" data-ar="دخول" data-en="Login">دخول</button>
+            </div>
+
+            <div id="admin-panel" style="display: none;">
+                <div class="admin-header">
+                    <h2 data-ar="لوحة الإدارة" data-en="Admin Panel">لوحة الإدارة</h2>
+                    <button class="cta-button" onclick="adminLogout()" data-ar="خروج" data-en="Logout">خروج</button>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showAdminTab('packages')" data-ar="إدارة الباقات" data-en="Manage Packages">إدارة الباقات</button>
+                    <button class="admin-tab" onclick="showAdminTab('bookings')" data-ar="الحجوزات" data-en="Bookings">الحجوزات</button>
+                    <button class="admin-tab" onclick="showAdminTab('revenue')" data-ar="الإيرادات" data-en="Revenue">الإيرادات</button>
+                </div>
+
+                <div class="admin-content">
+                    <div id="admin-packages" class="admin-tab-content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h3 data-ar="الباقات السياحية" data-en="Travel Packages">الباقات السياحية</h3>
+                            <button class="cta-button" onclick="showAddPackageModal()" data-ar="إضافة باقة جديدة" data-en="Add New Package">إضافة باقة جديدة</button>
+                        </div>
+                        <div class="package-list" id="admin-package-list">
+                            <!-- Packages will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div id="admin-bookings" class="admin-tab-content" style="display: none;">
+                        <h3 data-ar="جميع الحجوزات" data-en="All Bookings">جميع الحجوزات</h3>
+                        <div id="admin-bookings-list">
+                            <!-- Bookings will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div id="admin-revenue" class="admin-tab-content" style="display: none;">
+                        <h3 data-ar="ملخص الإيرادات" data-en="Revenue Summary">ملخص الإيرادات</h3>
+                        <div class="dashboard-grid">
+                            <div class="dashboard-card">
+                                <h4 data-ar="إجمالي الإيرادات" data-en="Total Revenue">إجمالي الإيرادات</h4>
+                                <div class="stat-number" id="total-revenue">$0</div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h4 data-ar="عدد الحجوزات" data-en="Total Bookings">عدد الحجوزات</h4>
+                                <div class="stat-number" id="admin-total-bookings">0</div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h4 data-ar="متوسط قيمة الحجز" data-en="Average Booking Value">متوسط قيمة الحجز</h4>
+                                <div class="stat-number" id="avg-booking-value">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Global Variables
+        let currentLanguage = 'ar';
+        let currentSection = 'home';
+        let selectedPackage = null;
+        let selectedAddons = [];
+        let isAdminLoggedIn = false;
+
+        // Mock Data
+        const mockPackages = [
+            {
+                id: 1,
+                title: { ar: 'رحلة دبي الفاخرة', en: 'Luxury Dubai Experience' },
+                description: { ar: 'استمتع بأفضل ما في دبي مع إقامة فاخرة وجولات حصرية', en: 'Enjoy the best of Dubai with luxury accommodation and exclusive tours' },
+                price: 2500,
+                rating: 5,
+                destination: 'dubai',
+                image: 'https://images.pexels.com/photos/1470502/pexels-photo-1470502.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',
+                duration: { ar: '7 أيام', en: '7 Days' }
+            },
+            {
+                id: 2,
+                title: { ar: 'سحر باريس الرومانسي', en: 'Romantic Paris Magic' },
+                description: { ar: 'اكتشف جمال باريس وسحرها مع جولات في أشهر المعالم', en: 'Discover the beauty and charm of Paris with tours of famous landmarks' },
+                price: 3200,
+                rating: 4.8,
+                destination: 'paris',
+                image: 'https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',
+                duration: { ar: '10 أيام', en: '10 Days' }
+            },
+            {
+                id: 3,
+                title: { ar: 'مغامرة طوكيو الثقافية', en: 'Tokyo Cultural Adventure' },
+                description: { ar: 'تجربة ثقافية فريدة في قلب اليابان العصرية', en: 'A unique cultural experience in the heart of modern Japan' },
+                price: 2800,
+                rating: 4.9,
+                destination: 'tokyo',
+                image: 'https://images.pexels.com/photos/2506923/pexels-photo-2506923.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',
+                duration: { ar: '8 أيام', en: '8 Days' }
+            },
+            {
+                id: 4,
+                title: { ar: 'جنة المالديف الاستوائية', en: 'Maldives Tropical Paradise' },
+                description: { ar: 'استرخ في أجمل جزر المالديف مع منتجعات فاخرة على المياه', en: 'Relax in the most beautiful Maldives islands with luxury overwater resorts' },
+                price: 4500,
+                rating: 5,
+                destination: 'maldives',
+                image: 'https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',
+                duration: { ar: '12 يوم', en: '12 Days' }
+            }
+        ];
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            loadPackages();
+            loadDashboardData();
+            updateLanguage();
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('travel-date').min = today;
+            document.getElementById('departure-date').min = today;
+        }
+
+        // Language Toggle
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            document.documentElement.lang = currentLanguage;
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const elements = document.querySelectorAll('[data-ar][data-en]');
+            elements.forEach(element => {
+                const text = element.getAttribute(`data-${currentLanguage}`);
+                if (text) {
+                    element.textContent = text;
+                }
+            });
+            
+            // Update placeholders
+            const placeholders = document.querySelectorAll('[data-placeholder-ar][data-placeholder-en]');
+            placeholders.forEach(element => {
+                const placeholder = element.getAttribute(`data-placeholder-${currentLanguage}`);
+                if (placeholder) {
+                    element.placeholder = placeholder;
+                }
+            });
+        }
+
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            currentSection = sectionName;
+            
+            // Load section-specific data
+            if (sectionName === 'dashboard') {
+                loadDashboardData();
+            } else if (sectionName === 'admin') {
+                if (isAdminLoggedIn) {
+                    loadAdminData();
+                }
+            }
+        }
+
+        // Package Management
+        function loadPackages(filteredPackages = null) {
+            const packagesToShow = filteredPackages || mockPackages;
+            const grid = document.getElementById('packages-grid');
+            
+            grid.innerHTML = packagesToShow.map(pkg => `
+                <div class="package-card fade-in">
+                    <img src="${pkg.image}" alt="${pkg.title[currentLanguage]}" class="package-image">
+                    <div class="package-content">
+                        <h3 class="package-title">${pkg.title[currentLanguage]}</h3>
+                        <p class="package-description">${pkg.description[currentLanguage]}</p>
+                        <div class="package-details">
+                            <span class="package-price">$${pkg.price}</span>
+                            <div class="package-rating">
+                                <span class="stars">${'★'.repeat(Math.floor(pkg.rating))}${'☆'.repeat(5-Math.floor(pkg.rating))}</span>
+                                <span>${pkg.rating}</span>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">${pkg.duration[currentLanguage]}</p>
+                        <button class="book-button" onclick="selectPackage(${pkg.id})">
+                            ${currentLanguage === 'ar' ? 'احجز الآن' : 'Book Now'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectPackage(packageId) {
+            selectedPackage = mockPackages.find(pkg => pkg.id === packageId);
+            showSection('booking');
+            
+            // Show package details
+            const detailsDiv = document.getElementById('package-details');
+            const infoDiv = document.getElementById('selected-package-info');
+            
+            detailsDiv.style.display = 'block';
+            infoDiv.innerHTML = `
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <img src="${selectedPackage.image}" alt="${selectedPackage.title[currentLanguage]}" style="width: 100px; height: 80px; object-fit: cover; border-radius: 10px;">
+                    <div>
+                        <h4>${selectedPackage.title[currentLanguage]}</h4>
+                        <p style="color: var(--text-secondary);">${selectedPackage.description[currentLanguage]}</p>
+                        <p style="color: var(--gold-color); font-weight: 600;">$${selectedPackage.price} - ${selectedPackage.duration[currentLanguage]}</p>
+                    </div>
+                </div>
+            `;
+            
+            updateTotalPrice();
+        }
+
+        // Search and Filter
+        function searchPackages(event) {
+            event.preventDefault();
+            
+            const destination = document.getElementById('destination-filter').value;
+            const maxPrice = document.getElementById('max-price').value;
+            const minRating = document.getElementById('min-rating').value;
+            
+            let filtered = mockPackages;
+            
+            if (destination) {
+                filtered = filtered.filter(pkg => pkg.destination === destination);
+            }
+            
+            if (maxPrice) {
+                filtered = filtered.filter(pkg => pkg.price <= parseInt(maxPrice));
+            }
+            
+            if (minRating) {
+                filtered = filtered.filter(pkg => pkg.rating >= parseFloat(minRating));
+            }
+            
+            loadPackages(filtered);
+            showToast(currentLanguage === 'ar' ? `تم العثور على ${filtered.length} باقة` : `Found ${filtered.length} packages`);
+        }
+
+        // Booking System
+        function toggleAddon(element, addonType, price) {
+            element.classList.toggle('selected');
+            
+            const addonIndex = selectedAddons.findIndex(addon => addon.type === addonType);
+            
+            if (addonIndex > -1) {
+                selectedAddons.splice(addonIndex, 1);
+            } else {
+                selectedAddons.push({ type: addonType, price: price });
+            }
+            
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            if (!selectedPackage) return;
+            
+            const travelers = parseInt(document.getElementById('travelers-count').value) || 1;
+            const basePrice = selectedPackage.price * travelers;
+            const addonsPrice = selectedAddons.reduce((total, addon) => total + addon.price, 0) * travelers;
+            const totalPrice = basePrice + addonsPrice;
+            
+            // Update cart display
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.querySelector('.cart-total span');
+            
+            let cartHTML = `
+                <div class="cart-item">
+                    <span>${selectedPackage.title[currentLanguage]} x${travelers}</span>
+                    <span>$${basePrice}</span>
+                </div>
+            `;
+            
+            selectedAddons.forEach(addon => {
+                const addonName = {
+                    hotel: currentLanguage === 'ar' ? 'فندق فاخر' : 'Luxury Hotel',
+                    transport: currentLanguage === 'ar' ? 'نقل خاص' : 'Private Transport',
+                    meals: currentLanguage === 'ar' ? 'وجبات مميزة' : 'Premium Meals'
+                };
+                
+                cartHTML += `
+                    <div class="cart-item">
+                        <span>${addonName[addon.type]} x${travelers}</span>
+                        <span>$${addon.price * travelers}</span>
+                    </div>
+                `;
+            });
+            
+            cartItems.innerHTML = cartHTML;
+            cartTotal.textContent = currentLanguage === 'ar' ? `المجموع: $${totalPrice}` : `Total: $${totalPrice}`;
+        }
+
+        function processBooking() {
+            if (!selectedPackage) {
+                showToast(currentLanguage === 'ar' ? 'يرجى اختيار باقة أولاً' : 'Please select a package first', 'error');
+                return;
+            }
+            
+            // Validate form
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const travelDate = document.getElementById('travel-date').value;
+            
+            if (!firstName || !lastName || !email || !phone || !travelDate) {
+                showToast(currentLanguage === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields', 'error');
+                return;
+            }
+            
+            // Create booking
+            const travelers = parseInt(document.getElementById('travelers-count').value) || 1;
+            const basePrice = selectedPackage.price * travelers;
+            const addonsPrice = selectedAddons.reduce((total, addon) => total + addon.price, 0) * travelers;
+            const totalPrice = basePrice + addonsPrice;
+            
+            const booking = {
+                id: Date.now(),
+                packageId: selectedPackage.id,
+                packageTitle: selectedPackage.title[currentLanguage],
+                customerName: `${firstName} ${lastName}`,
+                email: email,
+                phone: phone,
+                travelers: travelers,
+                travelDate: travelDate,
+                addons: selectedAddons,
+                totalPrice: totalPrice,
+                bookingDate: new Date().toISOString(),
+                status: 'confirmed'
+            };
+            
+            // Save to localStorage
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            bookings.push(booking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+            // Show confirmation modal
+            showBookingConfirmation(booking);
+            
+            // Reset form
+            resetBookingForm();
+            
+            showToast(currentLanguage === 'ar' ? 'تم تأكيد الحجز بنجاح!' : 'Booking confirmed successfully!');
+        }
+
+        function showBookingConfirmation(booking) {
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; color: var(--success-color); margin-bottom: 1rem;">✅</div>
+                    <h2 style="color: var(--gold-color); margin-bottom: 1rem;">
+                        ${currentLanguage === 'ar' ? 'تم تأكيد الحجز!' : 'Booking Confirmed!'}
+                    </h2>
+                    <div style="background: var(--dark-bg); padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                        <p><strong>${currentLanguage === 'ar' ? 'رقم الحجز:' : 'Booking ID:'}</strong> ${booking.id}</p>
+                        <p><strong>${currentLanguage === 'ar' ? 'الباقة:' : 'Package:'}</strong> ${booking.packageTitle}</p>
+                        <p><strong>${currentLanguage === 'ar' ? 'المسافرون:' : 'Travelers:'}</strong> ${booking.travelers}</p>
+                        <p><strong>${currentLanguage === 'ar' ? 'تاريخ السفر:' : 'Travel Date:'}</strong> ${booking.travelDate}</p>
+                        <p><strong>${currentLanguage === 'ar' ? 'المجموع:' : 'Total:'}</strong> $${booking.totalPrice}</p>
+                    </div>
+                    <p style="color: var(--text-secondary);">
+                        ${currentLanguage === 'ar' ? 'سيتم إرسال تفاصيل الحجز إلى بريدك الإلكتروني' : 'Booking details will be sent to your email'}
+                    </p>
+                </div>
+            `;
+            showModal();
+        }
+
+        function resetBookingForm() {
+            document.getElementById('first-name').value = '';
+            document.getElementById('last-name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('travel-date').value = '';
+            document.getElementById('travelers-count').value = '1';
+            
+            selectedAddons = [];
+            document.querySelectorAll('.addon-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            selectedPackage = null;
+            document.getElementById('package-details').style.display = 'none';
+            document.getElementById('cart-items').innerHTML = '<div class="cart-item"><span>يرجى اختيار باقة</span></div>';
+            document.querySelector('.cart-total span').textContent = 'المجموع: $0';
+        }
+
+        // Dashboard
+        function loadDashboardData() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            
+            // Update statistics
+            document.getElementById('total-bookings').textContent = bookings.length;
+            
+            const totalSpending = bookings.reduce((total, booking) => total + booking.totalPrice, 0);
+            document.getElementById('total-spending').textContent = `$${totalSpending}`;
+            
+            const loyaltyPoints = Math.floor(totalSpending / 10);
+            document.getElementById('loyalty-points').textContent = loyaltyPoints;
+            
+            // Update recent bookings
+            const recentBookings = document.getElementById('recent-bookings');
+            if (bookings.length > 0) {
+                const recent = bookings.slice(-3).reverse();
+                recentBookings.innerHTML = recent.map(booking => `
+                    <div style="margin-bottom: 0.5rem; padding: 0.5rem; background: var(--dark-bg); border-radius: 5px;">
+                        <strong>${booking.packageTitle}</strong><br>
+                        <small style="color: var(--text-secondary);">${booking.travelDate} - $${booking.totalPrice}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Admin Panel
+        function adminLogin() {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (username === 'admin' && password === '123') {
+                isAdminLoggedIn = true;
+                document.getElementById('admin-login').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadAdminData();
+                showToast(currentLanguage === 'ar' ? 'تم تسجيل الدخول بنجاح' : 'Login successful');
+            } else {
+                showToast(currentLanguage === 'ar' ? 'بيانات الدخول غير صحيحة' : 'Invalid credentials', 'error');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('admin-login').style.display = 'block';
+            document.getElementById('admin-panel').style.display = 'none';
+            showToast(currentLanguage === 'ar' ? 'تم تسجيل الخروج' : 'Logged out');
+        }
+
+        function showAdminTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.admin-tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Show selected tab content
+            document.getElementById(`admin-${tabName}`).style.display = 'block';
+            
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Load tab-specific data
+            if (tabName === 'packages') {
+                loadAdminPackages();
+            } else if (tabName === 'bookings') {
+                loadAdminBookings();
+            } else if (tabName === 'revenue') {
+                loadAdminRevenue();
+            }
+        }
+
+        function loadAdminData() {
+            loadAdminPackages();
+            loadAdminRevenue();
+        }
+
+        function loadAdminPackages() {
+            const packageList = document.getElementById('admin-package-list');
+            packageList.innerHTML = mockPackages.map(pkg => `
+                <div class="package-item" draggable="true" data-package-id="${pkg.id}">
+                    <div>
+                        <strong>${pkg.title[currentLanguage]}</strong><br>
+                        <small style="color: var(--text-secondary);">$${pkg.price} - ${pkg.destination}</small>
+                    </div>
+                    <div class="package-actions">
+                        <button class="action-button edit-button" onclick="editPackage(${pkg.id})">
+                            ${currentLanguage === 'ar' ? 'تعديل' : 'Edit'}
+                        </button>
+                        <button class="action-button delete-button" onclick="deletePackage(${pkg.id})">
+                            ${currentLanguage === 'ar' ? 'حذف' : 'Delete'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add drag and drop functionality
+            addDragAndDrop();
+        }
+
+        function loadAdminBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const bookingsList = document.getElementById('admin-bookings-list');
+            
+            if (bookings.length === 0) {
+                bookingsList.innerHTML = `<p>${currentLanguage === 'ar' ? 'لا توجد حجوزات' : 'No bookings found'}</p>`;
+                return;
+            }
+            
+            bookingsList.innerHTML = bookings.map(booking => `
+                <div class="dashboard-card" style="margin-bottom: 1rem;">
+                    <h4>حجز #${booking.id}</h4>
+                    <p><strong>${currentLanguage === 'ar' ? 'العميل:' : 'Customer:'}</strong> ${booking.customerName}</p>
+                    <p><strong>${currentLanguage === 'ar' ? 'الباقة:' : 'Package:'}</strong> ${booking.packageTitle}</p>
+                    <p><strong>${currentLanguage === 'ar' ? 'المسافرون:' : 'Travelers:'}</strong> ${booking.travelers}</p>
+                    <p><strong>${currentLanguage === 'ar' ? 'التاريخ:' : 'Date:'}</strong> ${booking.travelDate}</p>
+                    <p><strong>${currentLanguage === 'ar' ? 'المبلغ:' : 'Amount:'}</strong> $${booking.totalPrice}</p>
+                    <p><strong>${currentLanguage === 'ar' ? 'الحالة:' : 'Status:'}</strong> 
+                        <span style="color: var(--success-color);">${currentLanguage === 'ar' ? 'مؤكد' : 'Confirmed'}</span>
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function loadAdminRevenue() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            
+            const totalRevenue = bookings.reduce((total, booking) => total + booking.totalPrice, 0);
+            const totalBookings = bookings.length;
+            const avgBookingValue = totalBookings > 0 ? Math.round(totalRevenue / totalBookings) : 0;
+            
+            document.getElementById('total-revenue').textContent = `$${totalRevenue}`;
+            document.getElementById('admin-total-bookings').textContent = totalBookings;
+            document.getElementById('avg-booking-value').textContent = `$${avgBookingValue}`;
+        }
+
+        function addDragAndDrop() {
+            const packageItems = document.querySelectorAll('.package-item');
+            
+            packageItems.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.packageId);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const draggedId = e.dataTransfer.getData('text/plain');
+            const targetId = e.target.closest('.package-item').dataset.packageId;
+            
+            if (draggedId !== targetId) {
+                // Reorder packages (this is just visual, in a real app you'd update the database)
+                showToast(currentLanguage === 'ar' ? 'تم إعادة ترتيب الباقات' : 'Packages reordered');
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function showAddPackageModal() {
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <h3>${currentLanguage === 'ar' ? 'إضافة باقة جديدة' : 'Add New Package'}</h3>
+                <form onsubmit="addNewPackage(event)">
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'العنوان (عربي)' : 'Title (Arabic)'}</label>
+                        <input type="text" id="new-title-ar" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'العنوان (إنجليزي)' : 'Title (English)'}</label>
+                        <input type="text" id="new-title-en" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'الوصف (عربي)' : 'Description (Arabic)'}</label>
+                        <textarea id="new-desc-ar" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'الوصف (إنجليزي)' : 'Description (English)'}</label>
+                        <textarea id="new-desc-en" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'السعر' : 'Price'}</label>
+                        <input type="number" id="new-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'الوجهة' : 'Destination'}</label>
+                        <select id="new-destination" required>
+                            <option value="dubai">Dubai</option>
+                            <option value="paris">Paris</option>
+                            <option value="tokyo">Tokyo</option>
+                            <option value="maldives">Maldives</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="cta-button">${currentLanguage === 'ar' ? 'إضافة' : 'Add'}</button>
+                </form>
+            `;
+            showModal();
+        }
+
+        function addNewPackage(event) {
+            event.preventDefault();
+            
+            const newPackage = {
+                id: Date.now(),
+                title: {
+                    ar: document.getElementById('new-title-ar').value,
+                    en: document.getElementById('new-title-en').value
+                },
+                description: {
+                    ar: document.getElementById('new-desc-ar').value,
+                    en: document.getElementById('new-desc-en').value
+                },
+                price: parseInt(document.getElementById('new-price').value),
+                rating: 4.5,
+                destination: document.getElementById('new-destination').value,
+                image: 'https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',
+                duration: { ar: '7 أيام', en: '7 Days' }
+            };
+            
+            mockPackages.push(newPackage);
+            loadAdminPackages();
+            loadPackages();
+            closeModal();
+            showToast(currentLanguage === 'ar' ? 'تم إضافة الباقة بنجاح' : 'Package added successfully');
+        }
+
+        function editPackage(packageId) {
+            const pkg = mockPackages.find(p => p.id === packageId);
+            if (!pkg) return;
+            
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <h3>${currentLanguage === 'ar' ? 'تعديل الباقة' : 'Edit Package'}</h3>
+                <form onsubmit="updatePackage(event, ${packageId})">
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'العنوان (عربي)' : 'Title (Arabic)'}</label>
+                        <input type="text" id="edit-title-ar" value="${pkg.title.ar}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'العنوان (إنجليزي)' : 'Title (English)'}</label>
+                        <input type="text" id="edit-title-en" value="${pkg.title.en}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${currentLanguage === 'ar' ? 'السعر' : 'Price'}</label>
+                        <input type="number" id="edit-price" value="${pkg.price}" required>
+                    </div>
+                    <button type="submit" class="cta-button">${currentLanguage === 'ar' ? 'حفظ' : 'Save'}</button>
+                </form>
+            `;
+            showModal();
+        }
+
+        function updatePackage(event, packageId) {
+            event.preventDefault();
+            
+            const pkg = mockPackages.find(p => p.id === packageId);
+            if (pkg) {
+                pkg.title.ar = document.getElementById('edit-title-ar').value;
+                pkg.title.en = document.getElementById('edit-title-en').value;
+                pkg.price = parseInt(document.getElementById('edit-price').value);
+                
+                loadAdminPackages();
+                loadPackages();
+                closeModal();
+                showToast(currentLanguage === 'ar' ? 'تم تحديث الباقة' : 'Package updated');
+            }
+        }
+
+        function deletePackage(packageId) {
+            if (confirm(currentLanguage === 'ar' ? 'هل أنت متأكد من حذف هذه الباقة؟' : 'Are you sure you want to delete this package?')) {
+                const index = mockPackages.findIndex(p => p.id === packageId);
+                if (index > -1) {
+                    mockPackages.splice(index, 1);
+                    loadAdminPackages();
+                    loadPackages();
+                    showToast(currentLanguage === 'ar' ? 'تم حذف الباقة' : 'Package deleted');
+                }
+            }
+        }
+
+        // Modal Functions
+        function showModal() {
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
